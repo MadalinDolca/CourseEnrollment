@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Note'"></head>
+
+<body>
+<nav th:insert="/cursant/componente/nav.html"></nav>
+
+<div class="container">
+    <h2>Notele obtinute</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nume curs</th>
+            <th>Nota obtinuta</th>
+        </tr>
+        </thead>
+        <tbody id="listaCursuri">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var dateCursant
+    var email = sessionStorage.email
+    var rol = sessionStorage.rol
+    var jwt = sessionStorage.jwt
+
+    // obtine datele cursantului
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:8080/cursant/date/' + email,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                sessionStorage.setItem('dateCursant', JSON.stringify(data))
+                dateCursant = JSON.parse(sessionStorage.dateCursant)
+                getNote() // obtine notele
+            },
+            error: () => afisareMesaj($('.alert-danger'), 'Nu am putut prelua datele cursantului')
+        })
+    })
+
+    // obtine lista notelor din sistem
+    function getNote() {
+        $.ajax({
+            url: 'http://localhost:8080/cursant/' + dateCursant.id + '/note',
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $.each(data, (key, nota) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaCursuri").append(
+                        `<tr>
+                            <td>${nota.cursId}</td>
+                            <td>${nota.valoare}</td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine cursurile')
+        })
+    }
+</script>
+</body>
+</html>

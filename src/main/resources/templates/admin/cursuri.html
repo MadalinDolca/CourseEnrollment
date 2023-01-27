@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Cursuri'"></head>
+
+<body>
+<nav th:insert="/admin/componente/nav.html"></nav>
+
+<div class="container">
+    <div th:insert="/admin/componente/modalPersoaneDeLaCurs.html"></div>
+
+    <!-- adauga curs -->
+    <div class="form-group form-inline">
+        <input id="inputAdaugaCurs" type="text" class="form-control" required placeholder="Adauga numele cursului">
+        <button type="button" class="btn btn-success" onclick="adaugaCurs()">Adauga curs</button>
+    </div>
+
+    <h2>Cursuri</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume curs</th>
+            <th>Actiune</th>
+        </tr>
+        </thead>
+        <tbody id="listaCursuri">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var jwt = sessionStorage.jwt
+    var rolPersoana = 'cursant'
+    var idCursSelectat
+
+    $(document).ready(() => afiseasaCursuri()) // afiseaza cursurile la incarcarea paginii
+
+    // afiseaza cursurile din baza de date
+    function afiseasaCursuri() {
+        $.ajax({
+            url: 'http://localhost:8080/admin/cursuri',
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $('#listaCursuri #randCurs').remove()
+                $.each(data, (key, curs) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaCursuri").append(
+                        `<tr id="randCurs">
+                            <td>${curs.id}</td>
+                            <td>${curs.numeCurs}</td>
+                            <td>
+                            <button type="button" class="btn btn-success" onclick="window.afisarePersoaneDeLaCurs(${curs.id}, '${rolPersoana}')" data-toggle="modal" data-target="#modalPersoaneDeLaCurs">Afiseaza persoane</button>
+                            <button type="button" class="btn btn-danger" onclick="window.stergeCurs(${curs.id})">Sterge</button>
+                            </td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine persoanele')
+        })
+    }
+
+    // adauga cursul specificat in baza de date
+    function adaugaCurs() {
+        var numeCurs = $('#inputAdaugaCurs')
+
+        if (numeCurs.val().length < 5) {
+            afisareMesaj($('.alert-danger'), "Numele cursului este prea scurt")
+        } else {
+            var dateCurs = {numeCurs: numeCurs.val()}
+
+            $.ajax({
+                url: 'http://localhost:8080/admin/cursuri',
+                method: 'post',
+                headers: {'Authorization': jwt},
+                contentType: 'application/json', // catre server
+                data: JSON.stringify(dateCurs),
+                success: () => {
+                    numeCurs.val('') // goleste campul
+                    window.afisareMesaj($('.alert-success'), 'Cursul a fost adaugat', 3000, afiseasaCursuri()) // reactualizeaza lista
+                },
+                error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut adauga cursul')
+            })
+        }
+    }
+
+    // sterge cursul "id"
+    function stergeCurs(id) {
+        $.ajax({
+            url: 'http://localhost:8080/admin/cursuri/' + id,
+            method: 'delete',
+            headers: {'Authorization': jwt},
+            success: () => window.afisareMesaj($('.alert-success'), 'Cursul a fost sters', 3000, afiseasaCursuri()), // reactualizeaza lista
+            error: () => window.afisareMesaj($('.alert-danger'), "Nu am putut sterge cursul")
+        })
+    }
+
+    // afiseaza persoanele de la cursul dat
+    function afisarePersoaneDeLaCurs(cursId, rol) {
+        idCursSelectat = cursId
+
+        $.ajax({
+            url: `http://localhost:8080/admin/cursuri/${cursId}/tabel/${rol}`,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $('#listaPersoaneDeLaCurs #randPersoanaDeLaCurs').remove()
+                $.each(data, (key, persoana) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaPersoaneDeLaCurs").append(
+                        `<tr id="randPersoanaDeLaCurs">
+                            <td>${persoana.id}</td>
+                            <td>${persoana.nume}</td>
+                            <td>${persoana.prenume}</td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut afisa participantii cursului')
+        })
+    }
+</script>
+</body>
+</html>

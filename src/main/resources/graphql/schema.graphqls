@@ -1,0 +1,84 @@
+type Query {
+    test: ID
+}
+
+#type Query {
+#    getAllRoluri: [RolDTO]
+#    getAllPersoane(tabel: String!)
+#}
+#
+#type CursDTO {
+#    id: ID
+#    numeCurs: String
+#}
+#
+#type NotaDTO {
+#    cursId: String
+#    valoare: Int
+#}
+#
+#type RolDTO {
+#    id: ID
+#    numeRol: String
+#}
+#
+#input PersoanaInput {
+#    id: ID
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#    rolId: Int
+#}
+#
+#type PersoanaType {
+#    id: ID
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#    rolId: Int
+#}
+#
+#type PersoanaUpdateDTO {
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#}
+#
+#type AdminDTO {
+#    adminId: ID
+#
+#    id: ID
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#    rolId: Int
+#}
+#
+#type ProfesorDTO  {
+#    profesorId: ID
+#    listaCursuri: [CursDTO]
+#
+#    id: ID
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#    rolId: Int
+#}
+#
+#type CursantDTO {
+#    cursantId: ID
+#    listaCursuri: [CursDTO]
+#    listaNote: [NotaDTO]
+#
+#    id: ID
+#    prenume: String
+#    nume: String
+#    email: String
+#    parola: String
+#    rolId: Int
+#}

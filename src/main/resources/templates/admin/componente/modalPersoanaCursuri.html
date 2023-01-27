@@ -1,0 +1,40 @@
+<div class="modal fade" id="modalPersoanaCursuri" role="dialog">
+    <div class="modal-dialog">
+        <!-- continut modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Cursurile persoanei</h4>
+            </div>
+
+            <div class="modal-body">
+                <!-- field adauga la curs -->
+                <div class="form-group form-inline">
+                    <select id="adaugaModalRol" class="form-select" aria-label="Default select example">
+                        <option value="1" selected>Inteligenta Artificiala</option>
+                        <option value="2">Test</option>
+                    </select>
+
+                    <button type="button" class="btn btn-success" onclick="">Adauga la curs</button>
+                </div>
+
+                <!-- tabel cursuri -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nume curs</th>
+                        <th>Actiune</th>
+                    </tr>
+                    </thead>
+                    <tbody id="listaPersoanaCursuri">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+            </div>
+        </div>
+    </div>
+</div>

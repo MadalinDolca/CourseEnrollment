@@ -1,0 +1,1030 @@
+{
+	"info": {
+		"_postman_id": "459756b1-5a7f-4b80-aa48-d24b539c175d",
+		"name": "Proiect REST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18582573"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Inregistrare",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenume\": \"Test\",\r\n    \"nume\": \"Testescu\",\r\n    \"email\": \"test@mail.com\",\r\n    \"parola\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cursant",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autentificare",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"test@mail.com\",\r\n    \"parola\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Autentificare",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"root@mail.com\",\r\n    \"parola\": \"root\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz utilizatori din tabel sortati",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/profesor?coloana=id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"profesor"
+							],
+							"query": [
+								{
+									"key": "coloana",
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz utilizator din tabel dupa ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin?tabel=cursant&id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin"
+							],
+							"query": [
+								{
+									"key": "tabel",
+									"value": "cursant"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz persoane dupa ID rol",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/persoana/rolid/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"persoana",
+								"rolid",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz persoane de la curs ID din tabel",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/cursuri/1/tabel/profesor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursuri",
+								"1",
+								"tabel",
+								"profesor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz cursuri persoana din tabel cu persoana ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/cursant/id/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursant",
+								"id",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sterge persoana dupa ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/persoana/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"persoana",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inscrie persoana din tabel la curs",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/join?tabel=cursant&id=1&cursid=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"join"
+							],
+							"query": [
+								{
+									"key": "tabel",
+									"value": "cursant"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "cursid",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inlatura persoana din tabel de la curs",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/unjoin?tabel=cursant&id=1&cursid=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"unjoin"
+							],
+							"query": [
+								{
+									"key": "tabel",
+									"value": "cursant"
+								},
+								{
+									"key": "id",
+									"value": "1"
+								},
+								{
+									"key": "cursid",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz persoane dupa email",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "root@mail.com",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/persoana/email",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"persoana",
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adauga persoana",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenume\": \"Nou\",\r\n    \"nume\": \"Nouescu\",\r\n    \"email\": \"nou@mail.com\",\r\n    \"parola\": \"nou\",\r\n    \"rolId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/persoana",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"persoana"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizeaza date persoana",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenume\": \"Ionut\",\r\n    \"nume\": \"Popescu\",\r\n    \"email\": \"ipopescu@mail.com\",\r\n    \"parola\": \"ipopescu\",\r\n    \"rolId\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/persoana/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"persoana",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare cursuri",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/cursuri",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursuri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Viz curs dupa ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/cursuri/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursuri",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sterge curs",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/cursuri/99",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursuri",
+								"99"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adauga curs",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"numeCurs\": \"Noul curs\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/cursuri",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"cursuri"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJyb290QG1haWwuY29tIiwiZXhwIjoxNjc0ODM2OTg3fQ.oaQnLQgZwSNMwUPdU6UYeWHKPxz7snQzdI2WsF0RC9tqJBPP1sWnFPTDMsfFBjv2mRoivtNPSspyo8V7zRY7UA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Cursant",
+			"item": [
+				{
+					"name": "Autentificare",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ipopescu@mail.com\",\r\n    \"parola\": \"ipopescu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizare date",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenume\": \"Ionut Nou\",\r\n    \"nume\": \"Popescu Nou\",\r\n    \"email\": \"ipopescu@mail.com\",\r\n    \"parola\": \"ipopescu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cursant/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare note",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "javascript"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/cursant/1/note",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"1",
+								"note"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare cursuri",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsImV4cCI6MTY3NDU4NDQ5NH0.Wlo-NoEciQUK-Aa3wY-3_PJ4fRi3EHeOtz1JlMlF5I5yxy7lj2owPCKZ6vLU_SUphswNf8lNDtBqBXm3npS1jA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/cursant/cursuri",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"cursuri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare cursuri inscrise",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiZXhwIjoxNjc0NTg0OTg2fQ.w3x_XogEOA7apbEKYC-xXEsspNNzLUdh2m8CET-FRDcgBQhs82Ws3hopjnPqN0qCRcK9a0Rtv5xp7mO0310j7Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/cursant/1/cursuri",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"1",
+								"cursuri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inscriere curs",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiZXhwIjoxNjc0NTg0OTg2fQ.w3x_XogEOA7apbEKYC-xXEsspNNzLUdh2m8CET-FRDcgBQhs82Ws3hopjnPqN0qCRcK9a0Rtv5xp7mO0310j7Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/cursant/join?cursantid=1&cursid=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"join"
+							],
+							"query": [
+								{
+									"key": "cursantid",
+									"value": "1"
+								},
+								{
+									"key": "cursid",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Abandonare curs",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiZXhwIjoxNjc0NTg0OTg2fQ.w3x_XogEOA7apbEKYC-xXEsspNNzLUdh2m8CET-FRDcgBQhs82Ws3hopjnPqN0qCRcK9a0Rtv5xp7mO0310j7Q",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/cursant/unjoin?cursantid=1&cursid=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"cursant",
+								"unjoin"
+							],
+							"query": [
+								{
+									"key": "cursantid",
+									"value": "1"
+								},
+								{
+									"key": "cursid",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcG9wZXNjdUBtYWlsLmNvbSIsImV4cCI6MTY3NDc2NTIxOH0.7sAXueNzObDqALBWOUT_tdhzjWmeMeG7jZg8E4n6hPvK719tXpM26d9R-5vZBMxepvT2bSgb1zD7OD9hTVUbHA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Profesor",
+			"item": [
+				{
+					"name": "Autentificare",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"bdascalescu@mail.com\",\r\n    \"parola\": \"bdascalescu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizare date",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prenume\": \"Tomas\",\r\n    \"nume\": \"Dascalescu\",\r\n    \"email\": \"bdascalescu@mail.com\",\r\n    \"parola\": \"bdascalescu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profesor/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profesor",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare cursuri predate",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profesor/2/cursuri",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profesor",
+								"2",
+								"cursuri"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizare nota",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "11",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/profesor/note?profesorid=2&cursantid=1&cursid=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profesor",
+								"note"
+							],
+							"query": [
+								{
+									"key": "profesorid",
+									"value": "2"
+								},
+								{
+									"key": "cursantid",
+									"value": "1"
+								},
+								{
+									"key": "cursid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Vizualizare cursanti per curs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/profesor/cursanti?profesorid=2&cursid=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"profesor",
+								"cursanti"
+							],
+							"query": [
+								{
+									"key": "profesorid",
+									"value": "2"
+								},
+								{
+									"key": "cursid",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiZGFzY2FsZXNjdUBtYWlsLmNvbSIsImV4cCI6MTY3NDgxNDYyOX0.FyPjuKmjt-HmXvQLxf0DFKh4m92ETpHgxE6ZMzl1ekmWjcwu3MuvdX563zUu6fGDhP4WfbkoyDFnz6etZguF-g",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"item": [
+				{
+					"name": "Verifica rol",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJpcG9wZXNjdUBtYWlsLmNvbSIsImV4cCI6MTY3NDc1NzMxMn0.TpIcDY4UYIyLoyHuUWC5r1giofwZkL0RxDkYNUveUhZxJvnBfV_3mPF4tboBmC53ta3AuEJ8u2hTzKR8yc-u-A",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/Cursant",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"Cursant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QG1haWwuY29tIiwiZXhwIjoxNjc0NjA2NzgyfQ.8ff5HtJP3MWCzsqYLFrWfNmB4sE2N0hmTARxi2efjODFQykaE5s0xVY6Ee9BGw4YB4Uhbpen89sQwhMARd1Lfw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

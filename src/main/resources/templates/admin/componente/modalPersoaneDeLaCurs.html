@@ -1,0 +1,38 @@
+<div class="modal fade" id="modalPersoaneDeLaCurs" role="dialog">
+    <div class="modal-dialog">
+        <!-- continut modal -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Persoanele de la acest curs</h4>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- selector -->
+                <p>Selecteaza ce fel de persoane doresti sa afisezi</p>
+                <div class="btn-group btn-group-justified">
+                    <a href="#" class="btn btn-primary" onclick="afisarePersoaneDeLaCurs(idCursSelectat, 'cursant')">Cursanti</a>
+                    <a href="#" class="btn btn-primary" onclick="afisarePersoaneDeLaCurs(idCursSelectat, 'profesor')">Profesori</a>
+                </div>
+
+                <!-- tabel persoane -->
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Prenume</th>
+                        <th>Nume</th>
+                    </tr>
+                    </thead>
+                    <tbody id="listaPersoaneDeLaCurs">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+            </div>
+        </div>
+    </div>
+</div>

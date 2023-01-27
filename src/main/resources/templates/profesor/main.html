@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Cursuri predate'"></head>
+
+<body>
+<nav th:insert="/profesor/componente/nav.html"></nav>
+
+<div class="container">
+    <h2>Cursurile predate</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume curs</th>
+            <th>Actiune</th>
+        </tr>
+        </thead>
+        <tbody id="listaCursuri">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var dateProfesor
+    var email = sessionStorage.email
+    var rol = sessionStorage.rol
+    var jwt = sessionStorage.jwt
+
+    // obtine datele profesorului
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:8080/profesor/date/' + email,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                sessionStorage.setItem('dateProfesor', JSON.stringify(data))
+                dateProfesor = JSON.parse(sessionStorage.dateProfesor)
+                getCursuriPredate() // obtine cursurile predate
+            },
+            error: () => afisareMesaj($('.alert-danger'), 'Nu am putut prelua datele profesorului')
+        })
+    })
+
+    // obtine lista cursurilor predate din sistem
+    function getCursuriPredate() {
+        $.ajax({
+            url: `http://localhost:8080/profesor/${dateProfesor.id}/cursuri`,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $.each(data, (key, cursPredat) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaCursuri").append(
+                        `<tr>
+                            <td>${cursPredat.id}</td>
+                            <td>${cursPredat.numeCurs}</td>
+                            <td><button type="button" class="btn btn-success" onclick="window.vizualizareCursanti(${cursPredat.id}, '${cursPredat.numeCurs}')">Vizualizeaza cursanti</button></td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine cursurile')
+        })
+    }
+
+    // vizualizeaza cursantii inscrisi la cursul selectat intr-o pagina noua
+    function vizualizareCursanti(cursId, cursNume) {
+        window.location.replace(`http://localhost:8080/p/cursanti?cursId=${cursId}&cursNume=${cursNume}`)
+    }
+</script>
+</body>
+</html>

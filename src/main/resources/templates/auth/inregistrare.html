@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Inregistrare'"></head>
+
+<body>
+<div class="container">
+    <div th:insert="alerte.html"></div>
+
+    <h2>Creare cont</h2>
+    <div class="form-group">
+        <label for="prenume">Prenume</label>
+        <input id="prenume" type="text" class="form-control" required placeholder="Introdu prenumele">
+    </div>
+    <div class="form-group">
+        <label for="nume">Nume</label>
+        <input id="nume" type="text" class="form-control" required placeholder="Introdu numele">
+    </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" class="form-control" required placeholder="Introdu adresa de email">
+    </div>
+    <div class="form-group">
+        <label for="parola">Parola</label>
+        <input id="parola" type="password" class="form-control" required placeholder="Introdu parola">
+    </div>
+
+    <p><a th:href="@{/autentificare}">Autentifica-te</a></p>
+    <button class="btn btn-default" onclick="inregistrare()">Inregistreaza-te</button>
+</div>
+
+<script>
+    function inregistrare() {
+        const prenume = $('#prenume')
+        const nume = $('#nume')
+        const email = $('#email')
+        const parola = $('#parola')
+
+        // creaza un obiect cu datele din formular
+        const obi = JSON.stringify({
+            prenume: prenume.val(),
+            nume: nume.val(),
+            email: email.val(),
+            parola: parola.val()
+        })
+
+        if (prenume.val().length !== 0 && nume.val().length !== 0 &&
+            email.val().length !== 0 && parola.val().length !== 0) {
+            // trimite o cerere de inregistrare
+            $.ajax({
+                url: 'http://localhost:8080/cursant',
+                method: 'post',
+                contentType: 'application/json', // catre server headers: {'Content-Type': 'application/json'},
+                data: obi,
+                //dataType: 'json', // de la server
+                success: () => {
+                    // goleste campurile
+                    prenume.val('')
+                    nume.val('')
+                    email.val('')
+                    parola.val('')
+
+                    afisareMesaj(
+                        $('.alert-success'),
+                        `Contul ${$('#email').val()} a fost creat`,
+                        3000,
+                        () => location.replace('http://localhost:8080/autentificare') // redirectionare la pagina de autentificare
+                    )
+                },
+                error: raspuns => afisareMesaj($('.alert-danger'), raspuns.responseText)
+            })
+        }
+    }
+</script>
+</body>
+</html>

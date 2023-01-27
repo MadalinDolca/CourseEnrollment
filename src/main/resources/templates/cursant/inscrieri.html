@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Inscrieri'"></head>
+
+<body>
+<nav th:insert="/cursant/componente/nav.html"></nav>
+<div class="mesaj"></div>
+
+<div class="container">
+    <h2>Cursurile la care te-ai inscris</h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume curs</th>
+            <th>Actiune</th>
+        </tr>
+        </thead>
+        <tbody id="listaCursuri">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var dateCursant
+    var email = sessionStorage.email
+    var rol = sessionStorage.rol
+    var jwt = sessionStorage.jwt
+
+    // obtine datele cursantului
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:8080/cursant/date/' + email,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                sessionStorage.setItem('dateCursant', JSON.stringify(data))
+                dateCursant = JSON.parse(sessionStorage.dateCursant)
+                getInscrieri() // obtine cursurile
+            },
+            error: () => afisareMesaj($('.alert-danger'), 'Nu am putut prelua datele cursantului')
+        })
+    })
+
+    // obtine lista cursurilor la care s-a inscris din sistem
+    function getInscrieri() {
+        $.ajax({
+            url: 'http://localhost:8080/cursant/' + dateCursant.id + '/cursuri',
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $.each(data, (key, curs) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaCursuri").append(
+                        `<tr>
+                            <td>${curs.id}</td>
+                            <td>${curs.numeCurs}</td>
+                            <td><button type="button" class="btn btn-danger" onclick="window.abandonareCurs(${dateCursant.id}, '${curs.numeCurs}', ${curs.id})">Abandoneaza</button></td>
+                         </tr>`
+                    )
+                })
+            },
+            error: raspuns => window.afisareMesaj($('.alert-danger'), raspuns.responseText)
+        })
+    }
+
+    // inlatura cursantul curent la cursul selectat
+    function abandonareCurs(cursantId, cursNume, cursId) {
+        $.ajax({
+            url: `http://localhost:8080/cursant/unjoin?cursantid=${cursantId}&cursid=${cursId}`,
+            method: 'patch',
+            headers: {'Authorization': jwt},
+            success: () => {
+                location.reload() // reincarca pagina
+            },
+            error: raspuns => window.afisareMesaj($('.alert-danger'), raspuns.responseText)
+        })
+    }
+</script>
+</body>
+</html>

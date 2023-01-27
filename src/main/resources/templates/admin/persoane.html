@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Persoane'"></head>
+
+<body>
+<nav th:insert="/admin/componente/nav.html"></nav>
+
+<div class="container">
+    <!-- buton adauga persoana -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAdaugaPersoana">Adauga persoana</button>
+
+    <!-- modaluri -->
+    <div th:insert="/admin/componente/modalAdauga.html"></div>
+    <div th:insert="/admin/componente/modalEditeaza.html"></div>
+    <div th:insert="/admin/componente/modalPersoanaCursuri.html"></div>
+
+    <h2>Persoane</h2>
+    <p>Selecteaza ce fel de persoane doresti sa gestionezi</p>
+    <div class="btn-group btn-group-justified">
+        <a href="#" class="btn btn-primary" onclick="afiseazaPersoane('cursant')">Cursanti</a>
+        <a href="#" class="btn btn-primary" onclick="afiseazaPersoane('profesor')">Profesori</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Email</th>
+            <th>Actiuni</th>
+        </tr>
+        </thead>
+        <tbody id="listaPersoane">
+        </tbody>
+    </table>
+</div>
+
+<script>
+    var jwt = sessionStorage.jwt
+    var idPersoanaSelectata
+    var rolSelectat
+
+    // afiseaza cursantii in tabel la incarcarea paginii
+    $(document).ready(() => afiseazaPersoane('cursant'))
+
+    // adauga o persoana in sistem
+    function adaugaPersoana() {
+        var prenume = $('#adaugaModalPrenume')
+        var nume = $('#adaugaModalNume')
+        var email = $('#adaugaModalEmail')
+        var parola = $('#adaugaModalParola')
+        var rolId = $('#adaugaModalRol')
+
+        var datePersoana = {
+            prenume: prenume.val(),
+            nume: nume.val(),
+            email: email.val(),
+            parola: parola.val(),
+            rolId: rolId.val()
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/admin/persoana',
+            method: 'post',
+            headers: {'Authorization': jwt},
+            contentType: 'application/json', // catre server
+            data: JSON.stringify(datePersoana),
+            success: () => {
+                // goleste campurile
+                prenume.val('')
+                nume.val('')
+                email.val('')
+                parola.val('')
+
+                window.afisareMesaj($('.alert-success'), 'Persoana a fost adaugata', 3000, afiseazaPersoane(rolSelectat))
+            },
+            error: raspuns => window.afisareMesaj($('.alert-danger'), raspuns.responseText)
+        })
+    }
+
+    // afiseaza persoanele din tabelul (rolul) selectat
+    function afiseazaPersoane(rol) {
+        rolSelectat = rol
+
+        $.ajax({
+            url: `http://localhost:8080/admin/${rolSelectat}?coloana=nume`,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $('#listaPersoane #randPersoana').remove()
+                $.each(data, (key, persoana) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaPersoane").append(
+                        `<tr id="randPersoana">
+                            <td>${persoana.id}</td>
+                            <td>${persoana.nume}</td>
+                            <td>${persoana.prenume}</td>
+                            <td>${persoana.email}</td>
+                            <td>
+                            <button type="button" class="btn btn-success" onclick="window.afiseazaPersoanaCursuriAtribuite(${persoana.id})" data-toggle="modal" data-target="#modalPersoanaCursuri">Cursuri</button>
+                            <button type="button" class="btn btn-warning" onclick="window.populeazaModalPersoana(${persoana.id}, '${persoana.prenume}', '${persoana.nume}', '${persoana.email}')" data-toggle="modal" data-target="#modalEditeazaPersoana">Editeaza</button>
+                            <button type="button" class="btn btn-danger" onclick="window.stergePersoana(${persoana.id})">Sterge</button>
+                            </td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine persoanele')
+        })
+    }
+
+    // populeaza modalul persoanei cu datele acesteia
+    function populeazaModalPersoana(id, prenume, nume, email) {
+        idPersoanaSelectata = id
+        console.log(idPersoanaSelectata)
+        // populeaza datele
+        $('#editeazaModalPrenume').val(prenume)
+        $('#editeazaModalNume').val(nume)
+        $('#editeazaModalEmail').val(email)
+    }
+
+    // trimite catre server noile date ale persoanei selectate
+    function editeazaPersoana() {
+        var prenume = $('#editeazaModalPrenume')
+        var nume = $('#editeazaModalNume')
+        var email = $('#editeazaModalEmail')
+        var parola = $('#editeazaModalParola')
+
+        var datePersoana = {
+            prenume: prenume.val(),
+            nume: nume.val(),
+            email: email.val(),
+            parola: parola.val()
+        }
+
+        $.ajax({
+            url: 'http://localhost:8080/admin/persoana/' + idPersoanaSelectata,
+            method: 'patch',
+            headers: {'Authorization': jwt},
+            contentType: 'application/json', // catre server
+            data: JSON.stringify(datePersoana),
+            success: () => {
+                // goleste campurile
+                prenume.val('')
+                nume.val('')
+                email.val('')
+                parola.val('')
+
+                window.afisareMesaj($('.alert-success'), 'Persoana a fost actualizata', 3000, afiseazaPersoane(rolSelectat))
+            },
+            error: raspuns => window.afisareMesaj($('.alert-danger'), raspuns.responseText)
+        })
+    }
+
+    // sterge persoana in functie de id
+    function stergePersoana(idStergere) {
+        $.ajax({
+            url: 'http://localhost:8080/admin/persoana/' + idStergere,
+            method: 'delete',
+            headers: {'Authorization': jwt},
+            success: () => window.afisareMesaj($('.alert-success'), 'Persoana a fost stearsa', 3000, afiseazaPersoane(rolSelectat)),
+            error: () => window.afisareMesaj($('.alert-danger'), "Nu am putut sterge persoana")
+        })
+    }
+
+    // afiseaza cursurile la care participa persoana ID
+    function afiseazaPersoanaCursuriAtribuite(id) {
+        idPersoanaSelectata = id
+
+        $.ajax({
+            url: `http://localhost:8080/admin/${rolSelectat}/id/${idPersoanaSelectata}`,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $('#listaPersoanaCursuri #randPersoanaCursuri').remove() // sterge datele vechi
+
+                $.each(data, (key, curs) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaPersoanaCursuri").append(
+                        `<tr id="randPersoanaCursuri">
+                            <td>${curs.id}</td>
+                            <td>${curs.numeCurs}</td>
+                            <td>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="window.inlaturaPersoanaDeLaCurs('${rolSelectat}', ${idPersoanaSelectata}, ${curs.id})">Sterge</button>
+                            </td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine persoanele')
+        })
+    }
+
+    // inlatura persoana din tabelul dat, cu ID-ul specificat de la cursul "cursId"
+    function inlaturaPersoanaDeLaCurs(tabel, persoanaId, cursId) {
+        $.ajax({
+            url: `http://localhost:8080/admin/unjoin?tabel=${tabel}&id=${persoanaId}&cursid=${cursId}`,
+            method: 'patch',
+            headers: {'Authorization': jwt},
+            success: () => window.afisareMesaj($('.alert-success'), 'Persoana a fost inlaturata de la curs'),
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut inlatura persoana')
+        })
+    }
+</script>
+</body>
+</html>

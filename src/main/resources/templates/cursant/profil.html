@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:insert="head.html" th:with="titlu='Profil'"></head>
+
+<body>
+<nav th:insert="/cursant/componente/nav.html"></nav>
+
+<div class="container">
+    <h2>Profil</h2>
+    <p>Datele se pot modifica</p>
+
+    <div class="form-group">
+        <label for="prenume">Prenume</label>
+        <input id="prenume" type="text" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="nume">Nume</label>
+        <input id="nume" type="text" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="email">Adresa de email</label>
+        <input id="email" type="text" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="parola">Parola</label>
+        <input id="parola" type="password" class="form-control" required>
+    </div>
+
+    <button type="button" class="btn btn-primary" onclick="actualizareDate()">Actualizeaza datele</button>
+</div>
+
+<script>
+    var dateCursant
+    var email = sessionStorage.email
+    var rol = sessionStorage.rol
+    var jwt = sessionStorage.jwt
+
+    var campPrenume = $('#prenume')
+    var campNume = $('#nume')
+    var campEmail = $('#email')
+    var campParola = $('#parola')
+
+    // obtine datele cursantului si le afiseaza in campuri
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:8080/cursant/date/' + email,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                sessionStorage.setItem('dateCursant', JSON.stringify(data))
+                dateCursant = JSON.parse(sessionStorage.dateCursant)
+
+                // populeaza campurile cu date
+                campPrenume.val(dateCursant.prenume)
+                campNume.val(dateCursant.nume)
+                campEmail.val(dateCursant.email)
+            },
+            error: () => afisareMesaj($('.alert-danger'), 'Nu am putut prelua datele cursantului')
+        })
+    })
+
+    // actualizeaza datele
+    function actualizareDate() {
+        if (campParola.val().length === 0) { // daca nu s-a introdus o parola noua
+            afisareMesaj($('.alert-danger'), 'Introdu parola')
+        } else {
+            var dateNoi = {
+                prenume: campPrenume.val(),
+                nume: campNume.val(),
+                email: campEmail.val(),
+                parola: campParola.val()
+            }
+
+            $.ajax({
+                url: `http://localhost:8080/cursant/${dateCursant.id}`,
+                method: 'patch',
+                headers: {'Authorization': jwt},
+                contentType: 'application/json', // catre server
+                data: JSON.stringify(dateNoi),
+                success: () => window.afisareMesaj($('.alert-success'), 'Datele au fost actualizate'),
+                error: raspuns => window.afisareMesaj($('.alert-danger'), raspuns.responseText)
+            })
+        }
+    }
+</script>
+</body>
+</html>

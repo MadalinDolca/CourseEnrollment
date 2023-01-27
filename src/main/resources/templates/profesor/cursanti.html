@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Cursantii de la curs'"></head>
+
+<body>
+<nav th:insert="/profesor/componente/nav.html"></nav>
+
+<div class="container">
+    <h2>Cursantii inscrisi la <span id="numeCursTitlu"></span></h2>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nume</th>
+            <th>Prenume</th>
+            <th>Actiune</th>
+        </tr>
+        </thead>
+        <tbody id="listaCursanti">
+        </tbody>
+    </table>
+
+    <!-- modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- continut modal -->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Adaugare/Modificare nota</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input id="campNota" type="number" class="form-control" required placeholder="Nota">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="modificaNota()" type="button" class="btn btn-success" data-dismiss="modal">Adauga/Modifica nota</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Inchide</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var dateProfesor
+    var email = sessionStorage.email
+    var rol = sessionStorage.rol
+    var jwt = sessionStorage.jwt
+    var cursID
+    var cursantIdCurent
+
+    // obtine datele profesorului
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:8080/profesor/date/' + email,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                sessionStorage.setItem('dateProfesor', JSON.stringify(data))
+                dateProfesor = JSON.parse(sessionStorage.dateProfesor)
+                getCursantiCurs() // obtine cursantii de la curs
+            },
+            error: () => afisareMesaj($('.alert-danger'), 'Nu am putut prelua datele profesorului')
+        })
+    })
+
+    // obtine lista cursantilor inscrisi la cursul dat
+    function getCursantiCurs() {
+        // obtine parametrii din URL
+        const parametrii = new URLSearchParams(window.location.search)
+        cursID = parametrii.get('cursId')
+        $('#numeCursTitlu').text(parametrii.get('cursNume'))
+
+        $.ajax({
+            url: `http://localhost:8080/profesor/cursanti?profesorid=${dateProfesor.id}&cursid=${cursID}`,
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $.each(data, (key, cursant) => { // itereaza fiecare entitate din setul de rezultate
+                    $("#listaCursanti").append(
+                        `<tr>
+                            <td>${cursant.nume}</td>
+                            <td>${cursant.prenume}</td>
+                            <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="${cursantIdCurent = cursant.id}">Modifica nota</button></td>
+                         </tr>`
+                    )
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine cursantii')
+        })
+    }
+
+    // modifica nota cursantului selectat de la curs
+    function modificaNota() {
+        var campNota = $('#campNota').val()
+
+        if (campNota.length > 0 && Number(campNota) >= 0 && Number(campNota) <= 10) {
+            $.ajax({
+                url: `http://localhost:8080/profesor/note?profesorid=${dateProfesor.id}&cursantid=${cursantIdCurent}&cursid=${cursID}`,
+                method: 'patch',
+                headers: {'Authorization': jwt},
+                contentType: 'application/json', // catre server
+                data: JSON.stringify(Number(campNota)),
+                success: () => window.afisareMesaj($('.alert-success'), 'Nota a fost adaugata/modificata'),
+                error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut adauga/modifica nota')
+            })
+        }
+    }
+</script>
+</body>
+</html>

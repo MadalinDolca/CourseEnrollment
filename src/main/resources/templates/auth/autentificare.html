@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="head.html" th:with="titlu='Autentificare'"></head>
+
+<body>
+<div class="container">
+    <div th:insert="alerte.html"></div>
+
+    <h2>Autentificare</h2>
+    <!--<form method="post" role="form" th:action="@{/login}">-->
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" class="form-control" required placeholder="Introdu adresa de email">
+        <!--name="email"-->
+    </div>
+    <div class="form-group">
+        <label for="parola">Parola</label>
+        <input id="parola" type="password" class="form-control" required placeholder="Introdu parola">
+        <!--name="parola"-->
+    </div>
+
+    <p><a th:href="@{/inregistrare}">Creeaza cont</a></p>
+    <button class="btn btn-default" type="submit" onclick="autentificare()">Autentifica-te</button>
+    <!--<button class="btn btn-default" type="submit">Autentifica-te</button>-->
+    <!--</form>-->
+</div>
+
+<script>
+    function autentificare() {
+        const email = $('#email').val()
+        const parola = $('#parola').val()
+
+        if (email.length !== 0 && parola.length !== 0) {
+            const obi = JSON.stringify({ // creaza un obiect cu datele din formular
+                email: email,
+                parola: parola
+            })
+
+            // trimite o cerere de autentificare
+            $.ajax({
+                url: 'http://localhost:8080/login',
+                method: 'post',
+                contentType: 'application/json', // catre server
+                data: obi,
+                success: (data, textStatus, request) => {
+                    const jwt = request.getResponseHeader('Authorization'); // obtine JWT
+                    sessionStorage.setItem('jwt', jwt) // memoreaza token-ul in sesiune
+                    sessionStorage.setItem('email', email) // memoreaza email-ul in sesiune
+                    verificaRol()
+                },
+                error: () => afisareMesaj($('.alert-danger'), "Cont negasit", 5000)
+            })
+        }
+    }
+
+    function verificaRol() {
+        const jwt = sessionStorage.getItem('jwt')
+
+        $.ajax({ // verifica admin
+            url: 'http://localhost:8080/admin/check',
+            method: 'get',
+            headers: {'Authorization': 'Bearer ' + jwt},
+            success: () => {
+                sessionStorage.setItem('rol', 'Admin')
+                location.replace('http://localhost:8080/a')
+            }, error: () => {
+                $.ajax({ // verifica profesor
+                    url: 'http://localhost:8080/profesor/check',
+                    method: 'get',
+                    headers: {'Authorization': 'Bearer ' + jwt},
+                    success: () => {
+                        sessionStorage.setItem('rol', 'Profesor')
+                        location.replace('http://localhost:8080/p')
+                    }, error: () => {
+                        $.ajax({ // verifica cursant
+                            url: 'http://localhost:8080/cursant/check',
+                            method: 'get',
+                            headers: {'Authorization': 'Bearer ' + jwt},
+                            success: () => {
+                                sessionStorage.setItem('rol', 'Cursant')
+                                location.replace('http://localhost:8080/c')
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+</script>
+</body>
+</html>
