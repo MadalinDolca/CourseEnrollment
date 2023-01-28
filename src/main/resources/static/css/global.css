@@ -5,3 +5,9 @@
 .alert {
     display: none;
 }
+
+select {
+    padding: 8px;
+    border-radius: 4px;
+    width: 100%;
+}

@@ -6,7 +6,6 @@
 <nav th:insert="/admin/componente/nav.html"></nav>
 
 <div class="container">
-    <!-- buton adauga persoana -->
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAdaugaPersoana">Adauga persoana</button>
 
     <!-- modaluri -->
@@ -166,7 +165,28 @@
     // afiseaza cursurile la care participa persoana ID
     function afiseazaPersoanaCursuriAtribuite(id) {
         idPersoanaSelectata = id
+        var selectorCurs = $('#selectorModalPersoanaCursuri')
 
+        // populeaza selectorul de cursuri
+        $.ajax({
+            url: 'http://localhost:8080/admin/cursuri',
+            method: 'get',
+            headers: {'Authorization': jwt},
+            success: data => {
+                $('#selectorModalPersoanaCursuri #optiuneSelectorModalPersoanaCursuri').remove()
+
+                $.each(data, (key, curs) => { // itereaza fiecare entitate din setul de rezultate
+                    let optiune = document.createElement("option") // creeaza o optiune
+                    optiune.value = curs.id // seteaza id curs ca valoare selector
+                    optiune.innerHTML = curs.numeCurs // seteaza nume curs ca si continut selector
+                    optiune.setAttribute('id', 'optiuneSelectorModalPersoanaCursuri')
+                    selectorCurs.append(optiune) // ataseaza optiuea la selector
+                })
+            },
+            error: () => window.afisareMesaj($('.alert-success'), 'Nu am putut obtine cursurile')
+        })
+
+        // afiseaza cursurile la care este atribuita persoana
         $.ajax({
             url: `http://localhost:8080/admin/${rolSelectat}/id/${idPersoanaSelectata}`,
             method: 'get',
@@ -187,6 +207,19 @@
                 })
             },
             error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine persoanele')
+        })
+    }
+
+    // inscrie persoana din tabelul dat, cu ID-ul specificat la cursul "cursId"
+    function inscriePersoanaLaCurs() {
+        var idCursSelectat = $('#selectorModalPersoanaCursuri').val()
+
+        $.ajax({
+            url: `http://localhost:8080/admin/join?tabel=${rolSelectat}&id=${idPersoanaSelectata}&cursid=${idCursSelectat}`,
+            method: 'patch',
+            headers: {'Authorization': jwt},
+            success: () => window.afisareMesaj($('.alert-success'), 'Persoana a fost inscrisa la curs', 3000, afiseazaPersoanaCursuriAtribuite(idPersoanaSelectata)),
+            error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut inscrie persoana')
         })
     }
 
