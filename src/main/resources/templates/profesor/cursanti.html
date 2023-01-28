@@ -65,6 +65,10 @@
         })
     })
 
+    function obtineDate(idSelectat) {
+        cursantIdCurent = idSelectat
+    }
+
     // obtine lista cursantilor inscrisi la cursul dat
     function getCursantiCurs() {
         // obtine parametrii din URL
@@ -82,7 +86,7 @@
                         `<tr>
                             <td>${cursant.nume}</td>
                             <td>${cursant.prenume}</td>
-                            <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="${cursantIdCurent = cursant.id}">Modifica nota</button></td>
+                            <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="window.obtineDate(${cursant.id})">Modifica nota</button></td>
                          </tr>`
                     )
                 })
@@ -90,7 +94,6 @@
             error: () => window.afisareMesaj($('.alert-danger'), 'Nu am putut obtine cursantii')
         })
     }
-
 
     // modifica nota cursantului selectat de la curs
     function modificaNota() {
