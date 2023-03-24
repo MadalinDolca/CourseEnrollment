@@ -1,7 +1,12 @@
 # 📚Course Enrollment
 
 ## 🌟 Features
-
+- User authentication
+- JWT authorization
+- Role-based access (student, teacher, admin)
+- Allows the students to enroll to or abandon courses
+- Allows the students to view the courses they are enrolled to and to view their grades
+- Allows
 
 ## 🔮 Technologies
 - Spring Boot
@@ -17,3 +22,5 @@
 - JWT
 - jQuery
 - Bootstrap
+
+## 👀 Preview
