@@ -4,9 +4,13 @@
 - User authentication
 - JWT authorization
 - Role-based access (student, teacher, admin)
-- Allows the students to enroll to or abandon courses
-- Allows the students to view the courses they are enrolled to and to view their grades
-- Allows
+- Students can enroll or abandon courses
+- Students can view the courses they are enrolled to and their grades
+- Teachers can evaluate the students enrolled in each of the courses they teach or are assigned to
+- Administrators can view a list of all users according to their roles and the courses they are active in
+- Administrators can add or delete courses
+- Administrators can manage the existing users' data, change their role, delete their accounts or to create a new user
+- Administrators can assign teachers to each existing course and to enroll or remove students
 
 ## 🔮 Technologies
 - Spring Boot
