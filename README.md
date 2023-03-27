@@ -32,3 +32,38 @@ Spring Boot web app that allows students to enroll to courses and to be evaluate
 - Bootstrap
 
 ## 👀 Preview
+
+| Login | Register |
+| :-: | :-: |
+| <img src="art/login.png" width="500px"/> | <img src="art/register.png" width="500px"/> |
+
+### Student
+
+| Profile | Available courses |
+| :-: | :-: |
+| <img src="art/profile.png" width="500px"/> | <img src="art/student_available_courses.png" width="500px"/> |
+| Enrollments | Grades |
+| <img src="art/student_enrollments.png" width="500px"/> | <img src="art/student_grades.png" width="500px"/> |
+
+### Teacher
+
+| Taught courses | Enrolled students to course |
+| :-: | :-: |
+| <img src="art/teacher_taught_courses.png" width="500px"/> | <img src="art/teacher_enrolled_students_to_course.png" width="500px"/> |
+| Add/change grade |
+| <img src="art/teacher_add_change_grade.png" width="500px"/> |
+
+### Admin
+
+| View students | View teachers |
+| :-: | :-: |
+| <img src="art/admin_view_students.png" width="500px"/> | <img src="art/admin_view_teachers.png" width="500px"/> |
+| Add user | Edit user |
+| <img src="art/admin_add_user.png" width="500px"/> | <img src="art/admin_edit_user.png" width="500px"/> |
+| Manage student enrollments | Manage teacher courses |
+| <img src="art/admin_manage_student_enrollments.png" width="500px"/> | <img src="art/admin_manage_teacher_courses.png" width="500px"/> |
+| View courses | |
+| <img src="art/admin_view_courses.png" width="500px"/> | |
+| View enrolled students to course | View assigned teachers to course |
+| <img src="art/admin_view_enrolled_students_to_course.png" width="500px"/> | <img src="art/admin_view_assigned_teachers_to_course.png" width="500px"/> |
+
