@@ -1,6 +1,9 @@
-# 📚Course Enrollment
+# 📚 Course Enrollment
+
+Spring Boot web app that allows students to enroll to courses and to be evaluated by the teachers assigned to the respective courses.
 
 ## 🌟 Features
+
 - User authentication
 - JWT authorization
 - Role-based access (student, teacher, admin)
@@ -13,6 +16,7 @@
 - Administrators can assign teachers to each existing course and to enroll or remove students
 
 ## 🔮 Technologies
+
 - Spring Boot
   - Spring Web
   - Spring Data JPA
